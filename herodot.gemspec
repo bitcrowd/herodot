@@ -8,19 +8,12 @@ Gem::Specification.new do |spec|
   spec.version       = Herodot::VERSION
   spec.authors       = ['Andreas Knöpfle']
   spec.email         = ['andreas.knoepfle@gmail.com']
-  spec.summary       = 'Track you work with git branches'
+  spec.summary       = 'Track your work with your git activity.'
   spec.description   = 'With herodot you can track the times you spend on a '\
                        'git branch. When using a branch for each ticket you '\
                        'work on, herodot helps you with your time tracking.'
-  spec.homepage      = "TODO: Put your gem's website or public repo URL here."
+  spec.homepage      = 'https://github.com/bitcrowd/herodot'
   spec.license       = 'MIT'
-
-  if spec.respond_to?(:metadata)
-    spec.metadata['allowed_push_host'] = "TODO: Set to 'http://mygemserver.com'"
-  else
-    raise 'RubyGems 2.0 or newer is required to protect against ' \
-      'public gem pushes.'
-  end
 
   spec.files = `git ls-files -z`.split("\x0").reject do |f|
     f.match(%r{^(test|spec|features)/})
