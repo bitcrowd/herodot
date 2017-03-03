@@ -1,0 +1,7 @@
+inherit_gem:
+  rubocop-bitcrowd:
+    - .rubocop.yml
+    - .rubocop-rspec.yml
+
+Rails:
+  Enabled: false

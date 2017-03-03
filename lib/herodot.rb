@@ -1,47 +1,54 @@
+require 'rubygems'
+require 'bundler/setup'
 require 'herodot/version'
 require 'herodot/worklog'
-require 'rubygems'
+require 'herodot/parser'
+require 'herodot/commands'
+require 'herodot/table'
 require 'commander'
 
-module Herodot
-  class Application
-    include Commander::Methods
+class Herodot::Application
+  include Commander::Methods
 
-    def run
-      program :name, 'herodot'
-      program :version, VERSION
-      program :description, 'Tracks your work based on git branch checkouts'
+  def run
+    program :name, 'herodot'
+    program :version, Herodot::VERSION
+    program :description, 'Tracks your work based on git branch checkouts'
 
-      track_command
-      log_command
+    track_command
+    show_command
 
-      run!
-    end
+    run!
+  end
 
-    def track_command
-      command :track do |c|
-        c.syntax = 'herodot track [options]'
-        c.summary = ''
-        c.description = ''
-        c.example 'description', 'command example'
-        c.option '--some-switch', 'Some switch that does something'
-        c.action do |args, options|
-          # Do something or c.when_called Herodot::Commands::Track
-        end
+  def track_command
+    command :track do |c|
+      c.syntax = 'herodot track <repository path>'
+      c.summary = ''
+      c.description = ''
+      c.example 'herodot track', ''
+      c.action do |args, _|
+        Herodot::Commands.track(args[0])
       end
     end
+  end
 
-    def log_command
-      command :list do |c|
-        c.syntax = 'herodot list [options]'
-        c.summary = ''
-        c.description = ''
-        c.example 'description', 'command example'
-        c.option '--some-switch', 'Some switch that does something'
-        c.action do |args, options|
-          Worklog.new.list
-        end
+  def show_command
+    command :show do |c|
+      c.syntax = 'herodot show [<time range>]'
+      c.summary = 'Shows worklogs'
+      c.description = ''
+      show_command_examples(c)
+      c.action do |args, _options|
+        Herodot::Commands.show args
       end
     end
+  end
+
+  def show_command_examples(c)
+    c.example 'Shows this weeks worklogs', 'herodot show'
+    c.example 'Shows last weeks worklogs', 'herodot show last week'
+    c.example 'Shows worklogs for last monday', 'herodot show monday'
+    c.example 'Shows worklogs for 12-12-2016', 'herodot show 12-12-2016'
   end
 end
