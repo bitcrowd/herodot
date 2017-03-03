@@ -6,8 +6,8 @@ require 'herodot/version'
 Gem::Specification.new do |spec|
   spec.name          = 'herodot'
   spec.version       = Herodot::VERSION
-  spec.authors       = ['Andreas Knöpfle']
-  spec.email         = ['andreas.knoepfle@gmail.com']
+  spec.authors       = ['bitcrowd']
+  spec.email         = ['info@bitcrowd.net']
   spec.summary       = 'Track your work with your git activity.'
   spec.description   = 'With herodot you can track the times you spend on a '\
                        'git branch. When using a branch for each ticket you '\

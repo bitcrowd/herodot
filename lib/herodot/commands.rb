@@ -18,16 +18,14 @@ class Herodot::Commands
     puts output
   end
 
-  def self.track(path)
+  def self.track(path, config)
     path = '.' if path.nil?
+    puts "Start tracking of `#{File.expand_path(path)}` into `#{config.worklog_file}`."
     hooks = "#{path}/.git/hooks"
-    if File.exist?(hooks)
-      %w(post-checkout post-commit).each do |name|
-        File.open("#{hooks}/#{name}", 'w') { |file| file.write(SCRIPT) }
-        File.chmod(0o755, "#{hooks}/#{name}")
-      end
-    else
-      abort('Path is not a git repository.')
+    abort('Path is not a git repository.') unless File.exist?(hooks)
+    %w(post-checkout post-commit).each do |name|
+      File.open("#{hooks}/#{name}", 'w') { |file| file.write(SCRIPT) }
+      File.chmod(0o755, "#{hooks}/#{name}")
     end
   end
 end

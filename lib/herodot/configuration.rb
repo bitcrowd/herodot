@@ -1,7 +1,7 @@
 require 'yaml'
 
 class Herodot::Configuration
-  CONFIG_FILE = File.expand_path('~/.herodot').freeze
+  CONFIG_FILE = File.expand_path('~/.herodot.yml').freeze
   DEFAULT_CONFIGURATION = {
     'projects_directory' => '~',
     'work_times' => {
