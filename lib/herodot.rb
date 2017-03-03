@@ -1,6 +1,7 @@
 require 'rubygems'
 require 'bundler/setup'
 require 'herodot/version'
+require 'herodot/configuration'
 require 'herodot/worklog'
 require 'herodot/parser'
 require 'herodot/commands'
@@ -9,14 +10,16 @@ require 'commander'
 
 class Herodot::Application
   include Commander::Methods
+  USER_HOME = File.expand_path('~').to_s
 
   def run
     program :name, 'herodot'
     program :version, Herodot::VERSION
     program :description, 'Tracks your work based on git branch checkouts'
 
+    config = Herodot::Configuration.new
     track_command
-    show_command
+    show_command(config)
 
     run!
   end
@@ -33,14 +36,14 @@ class Herodot::Application
     end
   end
 
-  def show_command
+  def show_command(config)
     command :show do |c|
       c.syntax = 'herodot show [<time range>]'
       c.summary = 'Shows worklogs'
       c.description = ''
       show_command_examples(c)
       c.action do |args, _options|
-        Herodot::Commands.show args
+        Herodot::Commands.show args, config
       end
     end
   end

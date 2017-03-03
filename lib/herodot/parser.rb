@@ -3,15 +3,13 @@ require 'pry'
 
 class Herodot::Parser
   class << self
-    def parse(range)
+    def parse(range, config)
+      worklog = Herodot::Worklog.new(config)
       from, to = from_to_from_range(range)
-      user_path =  File.expand_path('~').to_s
-      ignored_path = user_path
-      worklog = Herodot::Worklog.new
-      CSV.foreach("#{user_path}/worklog", col_sep: ';') do |row|
+      CSV.foreach(config.worklog_file, col_sep: ';') do |row|
         next if row[2] == 'HEAD'
         time = Time.parse(row[0])
-        worklog.add_entry(time, row[1].gsub(ignored_path, ''), row[2]) if time >= from && time <= to
+        worklog.add_entry(time, row[1], row[2]) if time >= from && time <= to
       end
       worklog
     end

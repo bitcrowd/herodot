@@ -7,12 +7,13 @@ class Herodot::Commands
            "project=$(pwd)\n"\
            "branch=$(git rev-parse --abbrev-ref HEAD)\n"\
            'echo "$(date);$project;$branch" >> ~/worklog'.freeze
+  DEFAULT_RANGE = 'this week'.freeze
 
-  def self.show(args)
-    subject = args.empty? ? 'this week' : args.join(' ')
+  def self.show(args, config)
+    subject = args.empty? ? DEFAULT_RANGE : args.join(' ')
     range = Chronic.parse(subject, guess: false, context: :past)
     abort "Date not parsable: #{args.join(' ')}" unless range
-    worklog = Herodot::Parser.parse(range)
+    worklog = Herodot::Parser.parse(range, config)
     output = Herodot::Table.print(worklog.totals)
     puts output
   end
