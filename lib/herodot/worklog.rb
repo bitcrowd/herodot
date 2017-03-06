@@ -45,11 +45,15 @@ class Herodot::Worklog
     dates.map do |date|
       time_sums = grouped[date].each_with_object({}) do |time, sums|
         id = time[:id]
-        sums[id] ||= { time: 0, project: @branches.dig(id, :project), branch: @branches.dig(id, :branch) }
+        sums[id] ||= { time: 0, **branch(id) }
         sums[id][:time] += time[:time]
       end
       [date, time_sums]
     end
+  end
+
+  def branch(id)
+    @branches.fetch(id, {})
   end
 
   def dates
