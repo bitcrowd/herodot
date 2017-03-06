@@ -5,3 +5,6 @@ inherit_gem:
 
 Rails:
   Enabled: false
+
+Security/YAMLLoad:
+  Enabled: false

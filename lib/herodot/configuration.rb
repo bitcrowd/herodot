@@ -39,6 +39,6 @@ class Herodot::Configuration
   end
 
   def load_configuration
-    File.open(CONFIG_FILE) { |f| YAML.safe_load(f) }
+    File.open(CONFIG_FILE) { |f| YAML.load(f) }
   end
 end

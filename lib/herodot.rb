@@ -1,10 +1,10 @@
 require 'bundler/setup'
-require 'herodot/version'
-require 'herodot/configuration'
-require 'herodot/worklog'
-require 'herodot/parser'
-require 'herodot/commands'
-require 'herodot/table'
+require_relative 'herodot/version'
+require_relative 'herodot/configuration'
+require_relative 'herodot/worklog'
+require_relative 'herodot/parser'
+require_relative 'herodot/commands'
+require_relative 'herodot/table'
 require 'commander'
 
 class Herodot::Application
