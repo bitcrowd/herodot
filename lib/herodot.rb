@@ -5,7 +5,7 @@ require_relative 'herodot/configuration'
 require_relative 'herodot/worklog'
 require_relative 'herodot/parser'
 require_relative 'herodot/commands'
-require_relative 'herodot/table'
+require_relative 'herodot/output'
 
 class Herodot::Application
   include Commander::Methods
@@ -45,9 +45,10 @@ class Herodot::Application
       c.syntax = 'herodot show [<time range>]'
       c.summary = 'Shows worklogs'
       c.description = SHOW_DESCRIPTION
+      c.option '--format FORMAT', String, 'Uses specific output format (Supported: json)'
       show_command_examples(c)
-      c.action do |args, _options|
-        Herodot::Commands.show(args, config)
+      c.action do |args, options|
+        Herodot::Commands.show(args, config, options)
       end
     end
   end
@@ -57,5 +58,7 @@ class Herodot::Application
     c.example 'Shows last weeks worklogs', 'herodot show last week'
     c.example 'Shows worklogs for last monday', 'herodot show monday'
     c.example 'Shows worklogs for 12-12-2016', 'herodot show 12-12-2016'
+    c.example 'Shows last weeks worklogs as json', 'herodot show --format json last week'
+    c.example 'Shows last weeks worklogs as json (short)', 'herodot show -f json last week'
   end
 end

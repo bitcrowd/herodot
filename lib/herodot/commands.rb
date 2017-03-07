@@ -9,12 +9,12 @@ class Herodot::Commands
            'echo "$(date);$project;$branch" >> ~/worklog'.freeze
   DEFAULT_RANGE = 'this week'.freeze
 
-  def self.show(args, config)
+  def self.show(args, config, opts = {})
     subject = args.empty? ? DEFAULT_RANGE : args.join(' ')
     range = Chronic.parse(subject, guess: false, context: :past)
     abort "Date not parsable: #{args.join(' ')}" unless range
     worklog = Herodot::Parser.parse(range, config)
-    output = Herodot::Table.print(worklog.totals)
+    output = Herodot::Output.print(worklog.totals, opts)
     puts output
   end
 

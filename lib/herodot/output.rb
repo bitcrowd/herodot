@@ -1,6 +1,7 @@
 require 'terminal-table'
+require 'json'
 
-class Herodot::Table
+class Herodot::Output
   HEADERS = %w(Project Branch Time).freeze
   EMPTY_WORKLOG_MESSAGE = Rainbow('Not enough entries in the worklog.').red +
                           ' On a tracked repository `git checkout`'\
@@ -16,7 +17,19 @@ class Herodot::Table
       "#{hours}:#{minutes.to_s.rjust(2, '0')}:#{seconds.to_s.rjust(2, '0')}"
     end
 
-    def print(worklogs_totals_per_day)
+    def print(worklogs_totals_per_day, opts)
+      return convert_format(worklogs_totals_per_day, opts.format) if opts.format
+      print_table(worklogs_totals_per_day)
+    end
+
+    def convert_format(worklogs_totals_per_day, format)
+      case format
+      when 'json'
+        worklogs_totals_per_day.to_json
+      end
+    end
+
+    def print_table(worklogs_totals_per_day)
       abort EMPTY_WORKLOG_MESSAGE if worklogs_totals_per_day.empty?
       Terminal::Table.new(headings: HEADERS) do |table|
         worklogs_totals_per_day.each do |date, times|

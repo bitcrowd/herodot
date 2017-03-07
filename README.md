@@ -37,6 +37,11 @@ Show worklogs from 19-12-2016
 
 Herodot uses Chronic (https://github.com/mojombo/chronic) under the hood so you can enter anything that chronic supports.
 
+Instead of a terminal table you can also output into the `json` format:
+
+    $ herodot show -f json
+    $ herodot show -f json last week
+    $ herodot show --format json last week
 
 Show Help:
 
