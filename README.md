@@ -1,5 +1,7 @@
 # Herodot
 
+[![Build Status](https://travis-ci.org/bitcrowd/herodot.svg?branch=master)](https://travis-ci.org/bitcrowd/herodot)
+
 Tracks your work based on git branch checkouts and commits. With herodot every time you switch branches or commit into a branch,
 the brach name, time and project is logged into a worklog file. Herodot can then parse that worklog file and show you a *rough
 estimate* on which branch in which folder you worked on and how long. This can aid you with your personal time tracking.
