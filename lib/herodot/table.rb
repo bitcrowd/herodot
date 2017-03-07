@@ -3,8 +3,8 @@ require 'terminal-table'
 class Herodot::Table
   HEADERS = %w(Project Branch Time).freeze
   EMPTY_WORKLOG_MESSAGE = Rainbow('Not enough entries in the worklog.').red +
-                          ' On a tracked repository `git checkouts`'\
-                          ' and `git commits` will add entries.'.freeze
+                          ' On a tracked repository `git checkout`'\
+                          ' and `git commit` will add entries.'.freeze
   COLORS = %i(green yellow blue magenta cyan aqua silver aliceblue indianred).freeze
 
   class << self

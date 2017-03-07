@@ -26,6 +26,7 @@ class Herodot::Commands
     %w(post-checkout post-commit).each do |name|
       File.open("#{hooks}/#{name}", 'w') { |file| file.write(SCRIPT) }
       File.chmod(0o755, "#{hooks}/#{name}")
+      FileUtils.touch(config.worklog_file)
     end
   end
 end
