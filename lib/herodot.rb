@@ -1,11 +1,11 @@
-require 'bundler/setup'
+require 'commander'
+require 'rainbow'
 require_relative 'herodot/version'
 require_relative 'herodot/configuration'
 require_relative 'herodot/worklog'
 require_relative 'herodot/parser'
 require_relative 'herodot/commands'
 require_relative 'herodot/table'
-require 'commander'
 
 class Herodot::Application
   include Commander::Methods

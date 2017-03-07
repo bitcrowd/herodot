@@ -2,6 +2,9 @@ require 'csv'
 require 'pry'
 
 class Herodot::Parser
+  NO_SUCH_FILE = Rainbow('Worklog missing.').red +
+                 ' Use `herodot track` to track a git repository'\
+                 ' or `herodot help` to open the man page.'.freeze
   class << self
     def parse(range, config)
       worklog = Herodot::Worklog.new(config)
@@ -12,6 +15,8 @@ class Herodot::Parser
         worklog.add_entry(time, row[1], row[2]) if time >= from && time <= to
       end
       worklog
+    rescue Errno::ENOENT
+      abort NO_SUCH_FILE
     end
 
     def from_to_from_range(range)

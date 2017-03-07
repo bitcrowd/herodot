@@ -28,7 +28,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rubocop'
   spec.add_development_dependency 'rubocop-rspec'
   spec.add_development_dependency 'rubocop-bitcrowd'
-  spec.add_dependency 'pry'
+  spec.add_dependency 'rainbow'
   spec.add_dependency 'terminal-table'
   spec.add_dependency 'chronic'
   spec.add_dependency 'commander'
