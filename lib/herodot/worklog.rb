@@ -62,12 +62,11 @@ class Herodot::Worklog
 
   def work_time_events
     dates.flat_map do |date|
-      @config.work_times.map do |event, (hour, minute)|
-        {
-          id: event,
-          time: Time.new(date.year, date.month, date.day, hour, minute)
-        }
-      end
+      @config.work_times.map { |event, (hour, minute)|
+        time = Time.new(date.year, date.month, date.day, hour, minute)
+        next if time > Time.now
+        { id: event, time: time }
+      }.compact
     end
   end
 

@@ -1,5 +1,4 @@
 require 'csv'
-require 'pry'
 
 class Herodot::Parser
   NO_SUCH_FILE = Rainbow('Worklog missing.').red +
