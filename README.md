@@ -49,6 +49,21 @@ Show Help:
     $ herodot help track
     $ herodot help show
 
+## Linking to issue trackers
+If you use https://github.com/bitcrowd/tickety-tick or otherwise have branch names, that contain
+the issue number, you can link a tracked herodot repository with your issue tracker, so it
+will print urls of issues it recognizes under the branch name.
+
+To use this feature set up a link with
+
+    $ herodot link
+
+You are then guided through the process of linking. When using JIRA or Github with tickety-tick, this should be rather self-explaining, but you can also set up a custom tracker if you are using something different. Just choose `other` and add a URL, to which issue numbers can be appended and a Ruby style regular expression, to cut out the issue number out of your branches.
+
+The result will be written into a  `.herodot.yml` file in the current or specified directory.
+
+HINT: If you do not want to add `.herodot.yml` into your repo or `.gitignore`, you can add it to `./.git/info/exclude` as well. 
+
 ## Configuration
 
 Herodot writes a configuration yaml to `~/.herodot.yml` with something like this:

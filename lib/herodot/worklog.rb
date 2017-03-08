@@ -15,7 +15,7 @@ class Herodot::Worklog
     project = project_path.gsub(@config.projects_directory.to_s, '')
     id = "#{project}:#{branch}"
     @raw_logs << { time: time, id: id }
-    @branches[id] = { branch: branch, project: project }
+    @branches[id] = { branch: branch, project: project, path: project_path }
   end
 
   def logs_with_events
@@ -48,7 +48,7 @@ class Herodot::Worklog
         sums[id] ||= { time: 0, **branch(id) }
         sums[id][:time] += time[:time]
       end
-      [date, time_sums]
+      [date, time_sums.values]
     end
   end
 

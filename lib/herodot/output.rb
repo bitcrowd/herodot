@@ -49,10 +49,10 @@ class Herodot::Output
     end
 
     def print_day(times)
-      times.values.group_by { |log| log[:project] }.flat_map do |_, logs|
-        logs.map do |log|
-          [colorize(log[:project]), log[:branch], format_time(log[:time])]
-        end
+      times.sort_by { |log| log[:project] }.flat_map do |log|
+        lines = [[colorize(log[:project]), log[:branch], format_time(log[:time])]]
+        lines << ['', Rainbow(log[:link]).color(80, 80, 80), ''] if log[:link]
+        lines
       end
     end
   end
