@@ -6,6 +6,7 @@ require_relative 'herodot/worklog'
 require_relative 'herodot/parser'
 require_relative 'herodot/commands'
 require_relative 'herodot/output'
+require_relative 'herodot/project_link'
 
 class Herodot::Application
   include Commander::Methods
@@ -19,6 +20,7 @@ class Herodot::Application
     config = Herodot::Configuration.new
     track_command(config)
     show_command(config)
+    link_command(config)
     default_command :show
     run!
   end
@@ -27,7 +29,7 @@ class Herodot::Application
                       ', that will log the current branch into the worklog file.'.freeze
   def track_command(config)
     command :track do |c|
-      c.syntax = 'herodot track <repository path>'
+      c.syntax = 'herodot track [<repository path>]'
       c.summary = 'Start tracking a repository'
       c.description = TRACK_DESCRIPTION
       c.example 'Start tracking current repository', 'herodot track'
@@ -49,6 +51,20 @@ class Herodot::Application
       show_command_examples(c)
       c.action do |args, options|
         Herodot::Commands.show(args, config, options)
+      end
+    end
+  end
+
+  LINK_DESCRIPTION = 'This command can link a repository to a project issue tracking tool.'\
+                     ' The commmands writes the settings in `project_path/.herodot.yml`.'.freeze
+  def link_command(_)
+    command :link do |c|
+      c.syntax = 'herodot link [<repository path>]'
+      c.summary = 'Link project with issue tracker'
+      c.description = SHOW_DESCRIPTION
+      c.example 'Link current repository', 'herodot link'
+      c.action do |args, _|
+        Herodot::Commands.link(args[0])
       end
     end
   end

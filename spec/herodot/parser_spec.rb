@@ -19,7 +19,7 @@ RSpec.describe Herodot::Parser do
       subject(:days) { parsed_worklog.totals.map(&:first) }
       subject(:logs) { parsed_worklog.totals }
       subject(:total_time_in_hours_per_day) do
-        logs.map { |_, logs_day| (logs_day.values.reduce(0) { |sum, log| sum + log[:time] } / 3600) }
+        logs.map { |_, logs_day| (logs_day.reduce(0) { |sum, log| sum + log[:time] } / 3600) }
       end
       let(:now) { Time.local(2017, 3, 7, 12, 0) }
       let(:time) do
@@ -38,17 +38,21 @@ RSpec.describe Herodot::Parser do
         expect(total_time_in_hours_per_day).to eq [1.4105555555555556, 8, 8, 8.47888888888889, 8]
       end
 
+      let(:project_a_path) do
+        { project: 'project_a/repository', path: '/Users/me/projects/project_a/repository' }
+      end
+
       let(:expected_branches) do
-        [{ branch: 'master', project: 'project_a/repository' },
-         { branch: 'feature/FEAT-555-some-other-feature', project: 'project_a/repository' },
-         { branch: 'staging', project: 'project_a/repository' },
-         { branch: 'feature/FEAT-444-an-awesome-feature', project: 'project_a/repository' },
-         { branch: 'feature/FEAT-312-smaller-feature', project: 'project_a/repository' },
-         { branch: 'test', project: 'herodot' },
-         { branch: 'master', project: 'herodot' },
-         { branch: 'master', project: 'bitcrowd/herodot' },
-         { branch: 'feature/FEAT-4321-some-feature-2', project: 'project_a/repository' },
-         { branch: 'production', project: 'project_a/repository' }]
+        [{ branch: 'master', **project_a_path },
+         { branch: 'feature/FEAT-555-some-other-feature', **project_a_path },
+         { branch: 'staging', **project_a_path },
+         { branch: 'feature/FEAT-444-an-awesome-feature', **project_a_path },
+         { branch: 'feature/FEAT-312-smaller-feature', **project_a_path },
+         { branch: 'test', project: 'herodot', path: '/Users/me/projects/herodot' },
+         { branch: 'master', project: 'herodot', path: '/Users/me/projects/herodot' },
+         { branch: 'master', project: 'bitcrowd/herodot', path: '/Users/me/projects/bitcrowd/herodot' },
+         { branch: 'feature/FEAT-4321-some-feature-2', **project_a_path },
+         { branch: 'production', **project_a_path }]
       end
 
       it 'extracts the right branches' do
@@ -62,13 +66,11 @@ RSpec.describe Herodot::Parser do
         end
 
         it 'uses the full path there' do
-          expect(parsed_worklog.totals.first.last.map(&:to_a))
-            .to include(['/another-project/in-some-nested-folder/888:in-another-branch',
-                         {
-                           time: 17_157.0,
-                           branch: 'in-another-branch',
-                           project: '/another-project/in-some-nested-folder/888'
-                         }])
+          expect(parsed_worklog.totals.first.last)
+            .to include(time: 17_157.0,
+                        branch: 'in-another-branch',
+                        project: '/another-project/in-some-nested-folder/888',
+                        path: '/another-project/in-some-nested-folder/888')
         end
       end
     end
@@ -79,17 +81,14 @@ RSpec.describe Herodot::Parser do
       let(:time) { Time.local(2017, 3, 7, 0, 0) }
       let(:worklog) { "#{fixture_path}/worklog_before_lunch" }
       let(:expected_worklog) do
-        {
-          'example:some-branch'                 => { time: 1.0,
-                                                     branch: 'some-branch',
-                                                     project: 'example' },
-          'example:bug/EXAM-2-some-bug'         => { time: 707.0,
-                                                     branch: 'bug/EXAM-2-some-bug',
-                                                     project: 'example' },
-          'example:feature/EXAM-1-some-feature' => { time: 4690.0,
-                                                     branch: 'feature/EXAM-1-some-feature',
-                                                     project: 'example' }
-        }
+        [
+          { time: 1.0, branch: 'some-branch',
+            project: 'example', path: '/Users/me/projects/example' },
+          { time: 707.0, branch: 'bug/EXAM-2-some-bug',
+            project: 'example', path: '/Users/me/projects/example' },
+          { time: 4690.0, branch: 'feature/EXAM-1-some-feature',
+            project: 'example', path: '/Users/me/projects/example' }
+        ]
       end
 
       it 'parses example worklog (before lunch)' do
