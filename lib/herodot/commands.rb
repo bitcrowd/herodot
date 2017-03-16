@@ -37,6 +37,7 @@ class Herodot::Commands
       menu.prompt = 'What tracker do you want to link to?'
       menu.choice(:jira) { link_jira(path) }
       menu.choice(:github) { link_github(path) }
+      menu.choice(:gitlab) { link_gitlab(path) }
       menu.choices(:other) { link_other(path) }
       menu.default = :other
     end
@@ -51,6 +52,11 @@ class Herodot::Commands
   def self.link_github(path)
     handle = ask('Github handle (something/something for https://github.com/something/something)?')
     Herodot::ProjectLink.link(path, "https://github.com/#{handle}/issues/", '\\d+')
+  end
+
+  def self.link_gitlab(path)
+    handle = ask('GitLab handle (something/something for https://gitlab.com/something/something)?')
+    Herodot::ProjectLink.link(path, "https://gitlab.com/#{handle}/issues/", '\\d+')
   end
 
   def self.link_other(path)
