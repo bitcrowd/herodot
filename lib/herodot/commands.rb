@@ -19,7 +19,7 @@ class Herodot::Commands
     puts output
   end
 
-  def self.track(path, config)
+  def self.init(path, config)
     path = '.' if path.nil?
     puts "Start tracking of `#{File.expand_path(path)}` into `#{config.worklog_file}`."
     hooks = "#{path}/.git/hooks"

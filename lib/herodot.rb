@@ -18,23 +18,23 @@ class Herodot::Application
     program :description, 'Tracks your work based on git branch checkouts'
 
     config = Herodot::Configuration.new
-    track_command(config)
+    init_command(config)
     show_command(config)
     link_command(config)
     default_command :show
     run!
   end
 
-  TRACK_DESCRIPTION = 'This command sets up post commit and post checkout hooks'\
+  INIT_DESCRIPTION = 'This command sets up post commit and post checkout hooks'\
                       ', that will log the current branch into the worklog file.'.freeze
-  def track_command(config)
-    command :track do |c|
-      c.syntax = 'herodot track [<repository path>]'
+  def init_command(config)
+    command :init do |c|
+      c.syntax = 'herodot init [<repository path>]'
       c.summary = 'Start tracking a repository'
-      c.description = TRACK_DESCRIPTION
-      c.example 'Start tracking current repository', 'herodot track'
+      c.description = INIT_DESCRIPTION
+      c.example 'Start tracking current repository', 'herodot init'
       c.action do |args, _|
-        Herodot::Commands.track(args[0], config)
+        Herodot::Commands.init(args[0], config)
       end
     end
   end
