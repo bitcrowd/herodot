@@ -19,6 +19,7 @@ class Herodot::Application
 
     config = Herodot::Configuration.new
     init_command(config)
+    track_command(config)
     show_command(config)
     link_command(config)
     default_command :show
@@ -35,6 +36,20 @@ class Herodot::Application
       c.example 'Start tracking current repository', 'herodot init'
       c.action do |args, _|
         Herodot::Commands.init(args[0], config)
+      end
+    end
+  end
+
+  TRACK_DESCRIPTION = 'This command tracks the current branch/commit in a repo '\
+                      'and is called from the git hooks installed via `herodot init`.'.freeze
+  def track_command(config)
+    command :track do |c|
+      c.syntax = 'herodot track <repository path>'
+      c.summary = 'Record git activity in a repository (used internally)'
+      c.description = TRACK_DESCRIPTION
+      c.example 'Record the latest branch name etc. to the worklog', 'herodot track .'
+      c.action do |args, _|
+        Herodot::Commands.track(args[0], config)
       end
     end
   end
