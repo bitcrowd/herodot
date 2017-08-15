@@ -6,7 +6,7 @@ class Herodot::Commands
            "echo 'Logging into worklog'\n"\
            "project=$(pwd)\n"\
            "branch=$(git rev-parse --abbrev-ref HEAD)\n"\
-           'echo "$(date);$project;$branch" >> ~/worklog'.freeze
+           'echo "$(date);$project;$branch" >> ~/.worklog'.freeze
   DEFAULT_RANGE = 'this week'.freeze
 
   def self.show(args, config, opts = {})

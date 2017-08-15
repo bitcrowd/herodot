@@ -12,7 +12,7 @@ class Herodot::Configuration
     }
   }.freeze
 
-  def initialize(worklog_file = '~/worklog')
+  def initialize(worklog_file = '~/.worklog')
     @worklog_file = worklog_file
     if File.exist?(CONFIG_FILE)
       @config = load_configuration
