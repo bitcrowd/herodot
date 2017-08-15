@@ -2,7 +2,7 @@ require 'csv'
 
 class Herodot::Parser
   NO_SUCH_FILE = Rainbow('Worklog missing.').red +
-                 ' Use `herodot track` to track a git repository'\
+                 ' Use `herodot init` to start tracking a git repository'\
                  ' or `herodot help` to open the man page.'.freeze
   class << self
     def parse(range, config)

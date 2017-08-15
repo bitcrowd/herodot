@@ -1,12 +1,10 @@
+require 'date'
 require 'chronic'
 require 'fileutils'
 
 class Herodot::Commands
-  SCRIPT = "#!/bin/bash\n"\
-           "echo 'Logging into worklog'\n"\
-           "project=$(pwd)\n"\
-           "branch=$(git rev-parse --abbrev-ref HEAD)\n"\
-           'echo "$(date);$project;$branch" >> ~/.worklog'.freeze
+  SCRIPT = "#!/bin/sh\nherodot track $(pwd)".freeze
+
   DEFAULT_RANGE = 'this week'.freeze
 
   def self.show(args, config, opts = {})
@@ -19,7 +17,7 @@ class Herodot::Commands
     puts output
   end
 
-  def self.track(path, config)
+  def self.init(path, config)
     path = '.' if path.nil?
     puts "Start tracking of `#{File.expand_path(path)}` into `#{config.worklog_file}`."
     hooks = "#{path}/.git/hooks"
@@ -28,6 +26,16 @@ class Herodot::Commands
       File.open("#{hooks}/#{name}", 'w') { |file| file.write(SCRIPT) }
       File.chmod(0o755, "#{hooks}/#{name}")
       FileUtils.touch(config.worklog_file)
+    end
+  end
+
+  def self.track(path, config)
+    puts 'Logging into worklog'
+    File.open(config.worklog_file, 'a') do |worklog|
+      datestr = DateTime.now.strftime("%a %b %e %H:%M:%S %z %Y")
+      branch = `(cd #{path} && git rev-parse --abbrev-ref HEAD)`.strip
+      line = [datestr, path, branch].join(";")
+      worklog.puts(line)
     end
   end
 

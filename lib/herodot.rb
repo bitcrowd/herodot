@@ -18,6 +18,7 @@ class Herodot::Application
     program :description, 'Tracks your work based on git branch checkouts'
 
     config = Herodot::Configuration.new
+    init_command(config)
     track_command(config)
     show_command(config)
     link_command(config)
@@ -25,14 +26,28 @@ class Herodot::Application
     run!
   end
 
-  TRACK_DESCRIPTION = 'This command sets up post commit and post checkout hooks'\
+  INIT_DESCRIPTION = 'This command sets up post commit and post checkout hooks'\
                       ', that will log the current branch into the worklog file.'.freeze
+  def init_command(config)
+    command :init do |c|
+      c.syntax = 'herodot init [<repository path>]'
+      c.summary = 'Start tracking a repository'
+      c.description = INIT_DESCRIPTION
+      c.example 'Start tracking current repository', 'herodot init'
+      c.action do |args, _|
+        Herodot::Commands.init(args[0], config)
+      end
+    end
+  end
+
+  TRACK_DESCRIPTION = 'This command tracks the current branch/commit in a repo '\
+                      'and is called from the git hooks installed via `herodot init`.'.freeze
   def track_command(config)
     command :track do |c|
-      c.syntax = 'herodot track [<repository path>]'
-      c.summary = 'Start tracking a repository'
+      c.syntax = 'herodot track <repository path>'
+      c.summary = 'Record git activity in a repository (used internally)'
       c.description = TRACK_DESCRIPTION
-      c.example 'Start tracking current repository', 'herodot track'
+      c.example 'Record the latest branch name etc. to the worklog', 'herodot track .'
       c.action do |args, _|
         Herodot::Commands.track(args[0], config)
       end
