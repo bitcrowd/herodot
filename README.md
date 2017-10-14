@@ -12,6 +12,8 @@ Install with:
 
     $ gem install herodot
 
+Make sure you have installed at least ruby 2.1 or any newer ruby version.
+
 ## Usage
 
 Track a git repository:
@@ -50,6 +52,7 @@ Show Help:
     $ herodot help show
 
 ## Linking to issue trackers
+
 If you use https://github.com/bitcrowd/tickety-tick or otherwise have branch names, that contain
 the issue number, you can link a tracked herodot repository with your issue tracker, so it
 will print urls of issues it recognizes under the branch name.

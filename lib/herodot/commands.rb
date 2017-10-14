@@ -32,9 +32,9 @@ class Herodot::Commands
   def self.track(path, config)
     puts 'Logging into worklog'
     File.open(config.worklog_file, 'a') do |worklog|
-      datestr = DateTime.now.strftime("%a %b %e %H:%M:%S %z %Y")
+      datestr = DateTime.now.strftime('%a %b %e %H:%M:%S %z %Y')
       branch = `(cd #{path} && git rev-parse --abbrev-ref HEAD)`.strip
-      line = [datestr, path, branch].join(";")
+      line = [datestr, path, branch].join(';')
       worklog.puts(line)
     end
   end
