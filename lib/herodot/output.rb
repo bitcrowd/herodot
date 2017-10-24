@@ -48,8 +48,12 @@ class Herodot::Output
       Rainbow(project).color(COLORS[project.chars.map(&:ord).reduce(:+) % COLORS.size])
     end
 
+    def times_by_project_and_branch(times)
+      times.sort_by { |log| log[:branch] }.sort_by { |log| log[:project] }
+    end
+
     def print_day(times)
-      times.sort_by { |log| log[:project] }.flat_map do |log|
+      times_by_project_and_branch(times).flat_map do |log|
         lines = [[colorize(log[:project]), log[:branch], format_time(log[:time])]]
         lines << ['', Rainbow(log[:link]).color(80, 80, 80), ''] if log[:link]
         lines
