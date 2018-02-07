@@ -1,7 +1,7 @@
 class Herodot::Worklog
   attr_reader :branches
-  END_TRACK_EVENTS = [:work_end, :lunch_break_start, :after_last_dates_end].freeze
-  START_TRACK_EVNETS = [:work_start, :lunch_break_end, :before_first_dates_start].freeze
+  END_TRACK_EVENTS = %i[work_end lunch_break_start after_last_dates_end].freeze
+  START_TRACK_EVNETS = %i[work_start lunch_break_end before_first_dates_start].freeze
   EVENTS = (END_TRACK_EVENTS + START_TRACK_EVNETS).freeze
 
   def initialize(config)

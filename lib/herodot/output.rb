@@ -2,11 +2,11 @@ require 'terminal-table'
 require 'json'
 
 class Herodot::Output
-  HEADERS = %w(Project Branch Time).freeze
+  HEADERS = %w[Project Branch Time].freeze
   EMPTY_WORKLOG_MESSAGE = Rainbow('Not enough entries in the worklog.').red +
                           ' On a tracked repository `git checkout`'\
                           ' and `git commit` will add entries.'.freeze
-  COLORS = %i(green yellow blue magenta cyan aqua silver aliceblue indianred).freeze
+  COLORS = %i[green yellow blue magenta cyan aqua silver aliceblue indianred].freeze
 
   class << self
     def format_time(time_is_seconds)

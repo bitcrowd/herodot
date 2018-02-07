@@ -11,16 +11,20 @@ RSpec.describe Herodot::Parser do
 
   context '.parse' do
     subject(:parsed_worklog) { described_class.parse(time, config) }
+
     before do
       allow(File).to receive(:exist?).with(Herodot::Configuration::CONFIG_FILE).and_return(false)
     end
 
     context 'parse a worklog with multiple days' do
-      subject(:days) { parsed_worklog.totals.map(&:first) }
-      subject(:logs) { parsed_worklog.totals }
+      let(:days) { parsed_worklog.totals.map(&:first) }
+
+      let(:logs) { parsed_worklog.totals }
+
       subject(:total_time_in_hours_per_day) do
         logs.map { |_, logs_day| (logs_day.reduce(0) { |sum, log| sum + log[:time] } / 3600) }
       end
+
       let(:now) { Time.local(2017, 3, 7, 12, 0) }
       let(:time) do
         instance_double(Chronic::Span, begin:  Time.local(2017, 2, 27, 12, 0),
@@ -77,6 +81,7 @@ RSpec.describe Herodot::Parser do
 
     context 'look at worklog before lunch' do
       subject(:found_ids) { parsed_worklog.logs_with_times.map { |log| log[:id] } }
+
       let(:now) { Time.local(2017, 3, 7, 12, 0) }
       let(:time) { Time.local(2017, 3, 7, 0, 0) }
       let(:worklog) { "#{fixture_path}/worklog_before_lunch" }

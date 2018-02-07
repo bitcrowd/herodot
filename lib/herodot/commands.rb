@@ -22,7 +22,7 @@ class Herodot::Commands
     puts "Start tracking of `#{File.expand_path(path)}` into `#{config.worklog_file}`."
     hooks = "#{path}/.git/hooks"
     abort('Path is not a git repository.') unless File.exist?(hooks)
-    %w(post-checkout post-commit).each do |name|
+    %w[post-checkout post-commit].each do |name|
       File.open("#{hooks}/#{name}", 'w') { |file| file.write(SCRIPT) }
       File.chmod(0o755, "#{hooks}/#{name}")
       FileUtils.touch(config.worklog_file)
