@@ -12,6 +12,7 @@ class Herodot::Worklog
   end
 
   def add_entry(time, project_path, branch)
+    return if project_path.nil?
     project = project_path.gsub(@config.projects_directory.to_s, '')
     id = "#{project}:#{branch}"
     @raw_logs << { time: time, id: id }
