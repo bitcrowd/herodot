@@ -49,7 +49,7 @@ class Herodot::Output
     end
 
     def times_by_project_and_branch(times)
-      times.sort_by { |log| log[:branch] }.sort_by { |log| log[:project] }
+      times.sort_by { |log| [log[:project], log[:branch]] }
     end
 
     def print_day(times)
