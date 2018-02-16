@@ -1,8 +1,9 @@
-# coding: utf-8
+
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'herodot/version'
 
+# rubocop:disable Metrics/BlockLength
 Gem::Specification.new do |spec|
   spec.name          = 'herodot'
   spec.version       = Herodot::VERSION
@@ -19,17 +20,18 @@ Gem::Specification.new do |spec|
     f.match(%r{^(test|spec|features)/})
   end
   spec.bindir        = 'exe'
-  spec.executables   = %w(herodot)
-  spec.require_paths = %w(lib)
+  spec.executables   = %w[herodot]
+  spec.require_paths = %w[lib]
 
   spec.add_development_dependency 'bundler', '~> 1.14'
   spec.add_development_dependency 'rake', '~> 10.0'
   spec.add_development_dependency 'rspec', '~> 3.0'
   spec.add_development_dependency 'rubocop'
-  spec.add_development_dependency 'rubocop-rspec'
   spec.add_development_dependency 'rubocop-bitcrowd'
-  spec.add_dependency 'rainbow'
-  spec.add_dependency 'terminal-table'
+  spec.add_development_dependency 'rubocop-rspec'
   spec.add_dependency 'chronic'
   spec.add_dependency 'commander'
+  spec.add_dependency 'rainbow'
+  spec.add_dependency 'terminal-table'
 end
+# rubocop:enable Metrics/BlockLength

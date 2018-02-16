@@ -3,6 +3,10 @@ inherit_gem:
     - .rubocop.yml
     - .rubocop-rspec.yml
 
+AllCops:
+  Exclude:
+    - 'pkg/**/*'
+
 Rails:
   Enabled: false
 
