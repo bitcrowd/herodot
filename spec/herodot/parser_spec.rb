@@ -6,42 +6,29 @@ RSpec.describe Herodot::Parser do
 
   before do
     allow(Time).to receive(:now).and_return(now)
-    allow(config).to receive(:projects_directory) { '/Users/me/projects/' }
+    allow(config).to receive(:projects_directory).and_return('/Users/me/projects/')
   end
 
-  context '.parse' do
+  describe '.parse' do
     subject(:parsed_worklog) { described_class.parse(time, config) }
 
     before do
       allow(File).to receive(:exist?).with(Herodot::Configuration::CONFIG_FILE).and_return(false)
     end
 
-    context 'parse a worklog with multiple days' do
-      let(:days) { parsed_worklog.totals.map(&:first) }
-
-      let(:logs) { parsed_worklog.totals }
-
+    context 'when parsing a worklog with multiple days' do
       subject(:total_time_in_hours_per_day) do
         logs.map { |_, logs_day| (logs_day.reduce(0) { |sum, log| sum + log[:time] } / 3600) }
       end
 
+      let(:days) { parsed_worklog.totals.map(&:first) }
+      let(:logs) { parsed_worklog.totals }
       let(:now) { Time.local(2017, 3, 7, 12, 0) }
       let(:time) do
         instance_double(Chronic::Span, begin:  Time.local(2017, 2, 27, 12, 0),
                                        end:  Time.local(2017, 3, 5, 12, 0))
       end
       let(:worklog) { "#{fixture_path}/worklog_example" }
-
-      it 'parses a worklog for multiple days' do
-        expect(days.size).to eq 5
-        days.each { |day| expect(day).to be_a Date }
-      end
-
-      it 'calculates the hours of a day up to a total of 8 hours' do
-        # The first day is not complete and the second last day has obvious over hours
-        expect(total_time_in_hours_per_day).to eq [1.4105555555555556, 8, 8, 8.47888888888889, 8]
-      end
-
       let(:project_a_path) do
         { project: 'project_a/repository', path: '/Users/me/projects/project_a/repository' }
       end
@@ -57,6 +44,16 @@ RSpec.describe Herodot::Parser do
          { branch: 'master', project: 'bitcrowd/herodot', path: '/Users/me/projects/bitcrowd/herodot' },
          { branch: 'feature/FEAT-4321-some-feature-2', **project_a_path },
          { branch: 'production', **project_a_path }]
+      end
+
+      it 'parses a worklog for multiple days' do
+        expect(days.size).to eq 5
+        expect(days).to all be_a Date
+      end
+
+      it 'calculates the hours of a day up to a total of 8 hours' do
+        # The first day is not complete and the second last day has obvious over hours
+        expect(total_time_in_hours_per_day).to eq [1.4105555555555556, 8, 8, 8.47888888888889, 8]
       end
 
       it 'extracts the right branches' do
@@ -79,7 +76,7 @@ RSpec.describe Herodot::Parser do
       end
     end
 
-    context 'look at worklog before lunch' do
+    context 'when looking at a worklog before lunch' do
       subject(:found_ids) { parsed_worklog.logs_with_times.map { |log| log[:id] } }
 
       let(:now) { Time.local(2017, 3, 7, 12, 0) }
