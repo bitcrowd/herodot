@@ -27,11 +27,12 @@ class Herodot::Configuration
   end
 
   def projects_directory
-    File.expand_path(@config['projects_directory'])
+    File.expand_path(@config['projects_directory'] || DEFAULT_CONFIGURATION['projects_directory'])
   end
 
   def work_times
-    @config['work_times'].map { |k, v| [k.to_sym, v.split(':').map(&:to_i)] }
+    (@config['work_times'] || DEFAULT_CONFIGURATION['work_times'])
+      .map { |k, v| [k.to_sym, v.split(':').map(&:to_i)] }
   end
 
   def save_configuration
