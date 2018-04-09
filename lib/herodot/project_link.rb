@@ -27,9 +27,7 @@ module Herodot
     private
 
     def decorated_logs(logs)
-      logs.map do |log|
-        decorated_log(log)
-      end
+      logs.map { |log| decorated_log(log) }
     end
 
     def decorated_log(log)
@@ -41,7 +39,7 @@ module Herodot
     def issue_management_link(log)
       config = @project_configurations.fetch(log[:path], load_project_configuration(log[:path]))
       return nil unless config.fetch(:link, false)
-      ticket = log[:branch].scan(Regexp.new(config.fetch(:pattern, /$^/)))
+      ticket = log[:branch].scan(Regexp.new(config.fetch(:pattern, /$^/), Regexp::IGNORECASE))
       [config[:link], ticket.first].join if ticket.any?
     end
 
